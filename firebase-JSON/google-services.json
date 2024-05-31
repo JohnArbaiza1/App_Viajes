@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875307414557",
+    "project_id": "db-destinos",
+    "storage_bucket": "db-destinos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875307414557:android:fe20e4a4a853420c84c2f4",
+        "android_client_info": {
+          "package_name": "com.example.destinos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANOwrzGthpe8pmkOfcfyVgm1Yi1PZ8nd8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
