@@ -1,5 +1,6 @@
 package com.example.destinos;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,98 +16,118 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    Button btntregistrar;
-    public EditText user, email, pass;
+    //---------------------------------------------------------
+    //Atributos de la clase
+    //---------------------------------------------------------
+    public EditText user, email, pass,confirPass;
+    public Button btnRegistro, btnCancelar;
+    //Objetos a emplear
     FirebaseFirestore mifire;
     FirebaseAuth mauth;
+    public DatabaseReference reference;
+    Usuarios usuario = new Usuarios();
+    //Variables a emplear
+    public String confirmacion, iduser;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
 
+        //------------------------------------------
         mifire= FirebaseFirestore.getInstance();
         mauth= FirebaseAuth.getInstance();
+        //--------------------------------------------
+        //Capturando el id de los elementos
+        user = findViewById(R.id.txtUser);
+        email = findViewById(R.id.txtCorreo);
+        pass = findViewById(R.id.txtPass);
+        confirPass = findViewById(R.id.txtConfirmar);
+        btnRegistro = findViewById(R.id.btnresgister);
+        btnCancelar = findViewById(R.id.btnCancela);
+        //---------------------------------------------
 
-        user= findViewById(R.id.txtuser);
-        email= findViewById(R.id.txtcorreoR);
-        pass= findViewById(R.id.txtpassR);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        btntregistrar= findViewById(R.id.btnreg);
-
-        btntregistrar.setOnClickListener(new View.OnClickListener() {
+        //--------------------------------------------------
+        //Eventos de la activity
+        //--------------------------------------------------
+        btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String userUser = user.getText().toString().trim();
-                String userEmail = email.getText().toString().trim();
-                String userPass = pass.getText().toString().trim();
-
-
-                if (userUser.isEmpty() && userEmail.isEmpty() && userPass.isEmpty()) {
+                //Obtenemos los datos ingresados
+                reference = FirebaseDatabase.getInstance().getReference();
+                usuario.nameUser = user.getText().toString();
+                usuario.correo = email.getText().toString();
+                usuario.password = pass.getText().toString();
+                confirmacion = confirPass.getText().toString();
+                //Validamos que no existan campos vacios
+                if (usuario.nameUser.isEmpty() && usuario.correo.isEmpty() && usuario.password.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    reg(userUser, userEmail, userPass);
+                    //Verificamos que el password contenga 6 caracteres o mas
+                    if (usuario.password.length() >= 6) {
+                        //Llamamos a la funcion
+                        resUser();
 
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "El password debe contener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
+                    }
                 }
-
-            }
-
-        });
-
-    }
-
-    private void reg(String userUser, String userEmail, String userPass) {
-mauth.createUserWithEmailAndPassword(userEmail, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-    @Override
-    public void onComplete(@NonNull Task<AuthResult> task) {
-        String id= mauth.getCurrentUser().getUid();
-
-        Map<String, Object> map=new HashMap<>();
-        map.put("id", id);
-        map.put("Correo", userEmail);
-        map.put("Nombre", userUser);
-        map.put("Password", userPass);
-
-
-        mifire.collection("Usuarios").document(id).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-
-                finish();
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class
-                ));
-                Toast.makeText(RegisterActivity.this, "Usuario Registrado", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(RegisterActivity.this, "Error al guardar", Toast.LENGTH_SHORT).show();
             }
         });
 
-    }
-}).addOnFailureListener(new OnFailureListener() {
-    @Override
-    public void onFailure(@NonNull Exception e) {
-        Toast.makeText(RegisterActivity.this, "Error al registrar", Toast.LENGTH_SHORT).show();
-    }
-});
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
 
+    //metodo encargada del registro y authentication
+    private void resUser(){
+        mauth.createUserWithEmailAndPassword(usuario.correo,usuario.password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    //Obtenemos el id del modelo de authentication
+                    iduser = mauth.getCurrentUser().getUid();
+                    reference.child("Usuarios").child(iduser).setValue(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task2) {
+                            if(task2.isSuccessful()){
+                                startActivity(new Intent(RegisterActivity.this,InicioActivity.class));
+                                finish(); //Evita que el usuario vuelva a la pantlla de registro
+                            }
+                            else{
+                                Toast.makeText(RegisterActivity.this, "Error al guardar datos de usuario", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(RegisterActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
 }
