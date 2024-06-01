@@ -1,6 +1,5 @@
 package com.example.destinos;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,29 +7,30 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    Button btntregistrar;
-    public EditText user, email, pass;
+    //---------------------------------------------------------
+    //Atributos de la clase
+    //---------------------------------------------------------
+    public EditText user, email, pass,confirPass;
+    public Button btnRegistro;
+    //Objetos a emplear
     FirebaseFirestore mifire;
     FirebaseAuth mauth;
+    public DatabaseReference reference;
+    Usuarios usuario = new Usuarios();
+    //Variables a emplear
+    public String confirmacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,75 +38,44 @@ public class RegisterActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
 
+        //------------------------------------------
         mifire= FirebaseFirestore.getInstance();
         mauth= FirebaseAuth.getInstance();
+        //--------------------------------------------
+        //Capturando el id de los elementos
+        user= findViewById(R.id.txtUser);
+        email= findViewById(R.id.txtCorreo);
+        pass= findViewById(R.id.txtPass);
+        confirPass = findViewById(R.id.txtConfirmar);
+        btnRegistro = findViewById(R.id.btnresgister);
+        //---------------------------------------------
 
-        user= findViewById(R.id.txtuser);
-        email= findViewById(R.id.txtcorreoR);
-        pass= findViewById(R.id.txtpassR);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        btntregistrar= findViewById(R.id.btnreg);
-
-        btntregistrar.setOnClickListener(new View.OnClickListener() {
+        //--------------------------------------------------
+        //Eventos de la activity
+        //--------------------------------------------------
+        btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String userUser = user.getText().toString().trim();
-                String userEmail = email.getText().toString().trim();
-                String userPass = pass.getText().toString().trim();
+                //Obtenemos los datos ingresados
+                usuario.nameUser = user.getText().toString();
+                usuario.correo = email.getText().toString();
+                usuario.password = pass.getText().toString();
+                confirmacion = confirPass.getText().toString();
+                reference.child("Usuarios").push().setValue(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(RegisterActivity.this, "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-
-                if (userUser.isEmpty() && userEmail.isEmpty() && userPass.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();
-                } else {
-                    reg(userUser, userEmail, userPass);
-
-                }
-
-            }
-
-        });
-
-    }
-
-    private void reg(String userUser, String userEmail, String userPass) {
-mauth.createUserWithEmailAndPassword(userEmail, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-    @Override
-    public void onComplete(@NonNull Task<AuthResult> task) {
-        String id= mauth.getCurrentUser().getUid();
-
-        Map<String, Object> map=new HashMap<>();
-        map.put("id", id);
-        map.put("Correo", userEmail);
-        map.put("Nombre", userUser);
-        map.put("Password", userPass);
-
-
-        mifire.collection("Usuarios").document(id).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-
-                finish();
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class
-                ));
-                Toast.makeText(RegisterActivity.this, "Usuario Registrado", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(RegisterActivity.this, "Error al guardar", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-}).addOnFailureListener(new OnFailureListener() {
-    @Override
-    public void onFailure(@NonNull Exception e) {
-        Toast.makeText(RegisterActivity.this, "Error al registrar", Toast.LENGTH_SHORT).show();
-    }
-});
-
-    }
-
-
 }
