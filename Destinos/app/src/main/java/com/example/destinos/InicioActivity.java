@@ -65,6 +65,7 @@ public class InicioActivity extends AppCompatActivity {
         favorite = new favoriteDestinationFragment();
         agregar= new AgregarDestinosFragment();
         //---------------------------------------------------------------
+        btnExit.setVisibility(View.VISIBLE);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -81,18 +82,22 @@ public class InicioActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()){
                     case R.id.home:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,home).commit();
+                        btnExit.setVisibility(View.VISIBLE);
                     break;
 
                     case R.id.eventos:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,agregar).commit();
+                        btnExit.setVisibility(View.INVISIBLE);
                         break;
 
                     case R.id.explo:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,explorar).commit();
+                        btnExit.setVisibility(View.INVISIBLE);
                     break;
 
                     case R.id.favorite:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,favorite).commit();
+                        btnExit.setVisibility(View.INVISIBLE);
                     break;
                 }
                 return true;
