@@ -18,7 +18,13 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -34,6 +40,7 @@ public class InicioActivity extends AppCompatActivity {
     Button btnExit;
     TextView userName;
     private FirebaseAuth mauth;
+    public DatabaseReference reference;
     //-----------------------------------------------------------
 
 
@@ -46,6 +53,7 @@ public class InicioActivity extends AppCompatActivity {
 
         //---------------------------------------------------------------
         mauth = FirebaseAuth.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference();
         //---------------------------------------------------------------
         //Capturamos los id
         menu = findViewById(R.id.menuApp);
@@ -99,5 +107,27 @@ public class InicioActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        infouser();
+    }
+
+    //Metodo para extarer el name del user
+    private void infouser(){
+
+        String id = mauth.getCurrentUser().getUid();
+        reference.child("Usuarios").child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String name = snapshot.child("nameUser").getValue().toString();
+                    userName.setText(name);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 }
