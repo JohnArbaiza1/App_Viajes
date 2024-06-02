@@ -20,8 +20,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -71,7 +74,6 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Obtenemos los datos ingresados
                 reference = FirebaseDatabase.getInstance().getReference();
                 usuario.nameUser = user.getText().toString();
@@ -89,8 +91,22 @@ public class RegisterActivity extends AppCompatActivity {
                         if (usuario.password.length() >= 6) {
                             // Verificamos que las contraseñas coincidan
                             if (usuario.password.equals(confirmacion)) {
-                                //Llamamos a la función
-                                resUser();
+                                reference.child("Usuarios").orderByChild("correo").equalTo(usuario.correo).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            Toast.makeText(RegisterActivity.this, "El correo ya está registrado", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            //Llamamos a la función
+                                            resUser();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        // Handle possible errors
+                                    }
+                                });
                             } else {
                                 Toast.makeText(RegisterActivity.this, "Las contraseñas no son correctas", Toast.LENGTH_SHORT).show();
                             }
@@ -102,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
             }
+
         });
 
 
