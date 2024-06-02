@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.destinos.Destinos;
 import com.example.destinos.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,10 @@ public class destinoAdapater extends BaseAdapter {
         TextView txtdire= view.findViewById(R.id.lbldireD);
         ImageView img= view.findViewById(R.id.imageView3);
 
-
+        txtnombre.setText(ds.getNombre());
+        txtdes.setText(ds.getDescripcion());
+        txtdire.setText(ds.getDireccion());
+        Picasso.get().load(ds.getURLImagen()).into(img);
 
         return view;
     }

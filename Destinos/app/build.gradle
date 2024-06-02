@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation libs.appcompat
     implementation libs.material

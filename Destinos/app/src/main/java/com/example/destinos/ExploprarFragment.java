@@ -2,11 +2,25 @@ package com.example.destinos;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.example.destinos.Adapter.destinoAdapater;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +38,10 @@ public class ExploprarFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+
+    private ListView listView;
+    private destinoAdapater adapter;
+    private ArrayList<Destinos> destinoList;
     public ExploprarFragment() {
         // Required empty public constructor
     }
@@ -59,6 +77,43 @@ public class ExploprarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exploprar, container, false);
+        View view = inflater.inflate(R.layout.fragment_exploprar, container, false);
+        listView = view.findViewById(R.id.listView);
+        destinoList = new ArrayList<>();
+        adapter = new destinoAdapater(getContext(), destinoList);
+        listView.setAdapter(adapter);
+
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Destinos");
+
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                destinoList.clear();
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    String descripcion = postSnapshot.child("Descripcion").getValue(String.class);
+                    String nombre = postSnapshot.child("Nombre").getValue(String.class);
+                    String direccion = postSnapshot.child("Direccion").getValue(String.class);
+                    String urlImagen = postSnapshot.child("URLImagen").getValue(String.class);
+
+
+                    if (descripcion != null && nombre != null && direccion != null && urlImagen != null ) {
+
+                        Destinos destino = new Destinos(descripcion, nombre, direccion, urlImagen);
+                        destinoList.add(destino);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return view;
     }
 }
