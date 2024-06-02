@@ -78,21 +78,33 @@ public class RegisterActivity extends AppCompatActivity {
                 usuario.correo = email.getText().toString();
                 usuario.password = pass.getText().toString();
                 confirmacion = confirPass.getText().toString();
+
                 //Validamos que no existan campos vacios
-                if (usuario.nameUser.isEmpty() && usuario.correo.isEmpty() && usuario.password.isEmpty()) {
+                if (usuario.nameUser.isEmpty() || usuario.correo.isEmpty() || usuario.password.isEmpty() || confirmacion.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    //Verificamos que el password contenga 6 caracteres o mas
-                    if (usuario.password.length() >= 6) {
-                        //Llamamos a la funcion
-                        resUser();
-
+                    // Validamos el correo electrónico
+                    if (ValidarEmail(usuario.correo)) {
+                        // Verificamos que el password contenga 6 caracteres o más
+                        if (usuario.password.length() >= 6) {
+                            // Verificamos que las contraseñas coincidan
+                            if (usuario.password.equals(confirmacion)) {
+                                //Llamamos a la función
+                                resUser();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "Las contraseñas no son correctas", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "El password debe contener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(RegisterActivity.this, "El password debe contener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "El correo debe ser una dirección válida de Gmail", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
+
+
 
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +115,12 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+
+    public boolean ValidarEmail(String email) {
+        // validacion correos
+        String emailPattern = "^[a-zA-Z0-9._]+@gmail\\.com$";
+        return email.matches(emailPattern);
+    }
     //metodo encargada del registro y authentication
     private void resUser(){
         mauth.createUserWithEmailAndPassword(usuario.correo,usuario.password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

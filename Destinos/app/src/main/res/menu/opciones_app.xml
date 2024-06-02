@@ -4,6 +4,10 @@
         android:id="@+id/home"
         android:title="Home"
         android:icon="@drawable/home"></item>
+    <item
+        android:id="@+id/eventos"
+        android:title="Agregar Destinos"
+        android:icon="@drawable/add"></item>
 
     <item
         android:id="@+id/explo"

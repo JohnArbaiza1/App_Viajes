@@ -29,7 +29,7 @@ public class InicioActivity extends AppCompatActivity {
     //-----------------------------------------------------------
     //Atributos de la clase
     //-----------------------------------------------------------
-    public Fragment home,explorar,favorite;
+    public Fragment home,explorar,favorite,agregar;
     BottomNavigationView menu;
     Button btnExit;
     TextView userName;
@@ -55,6 +55,7 @@ public class InicioActivity extends AppCompatActivity {
         home = new principalFragment();
         explorar = new ExploprarFragment();
         favorite = new favoriteDestinationFragment();
+        agregar= new AgregarDestinosFragment();
         //---------------------------------------------------------------
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -73,6 +74,10 @@ public class InicioActivity extends AppCompatActivity {
                     case R.id.home:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,home).commit();
                     break;
+
+                    case R.id.eventos:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,agregar).commit();
+                        break;
 
                     case R.id.explo:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,explorar).commit();
