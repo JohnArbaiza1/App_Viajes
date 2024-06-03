@@ -1,15 +1,13 @@
 package com.example.destinos;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.destinos.Adapter.destinoAdapater;
 import com.google.firebase.database.DataSnapshot;
@@ -18,9 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,7 +81,6 @@ public class ExploprarFragment extends Fragment {
 
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Destinos");
-
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override

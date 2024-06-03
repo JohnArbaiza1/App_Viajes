@@ -12,14 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.destinos.Comentarios;
 import com.example.destinos.Destinos;
 import com.example.destinos.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,14 +36,14 @@ public class destinoAdapater extends BaseAdapter {
 
     public DatabaseReference reference;
     private FirebaseAuth mauth;
-    Comentarios comentario = new Comentarios();
+    Comentarios comentario;
     public String destinoId;
     public String nombreDestino;
-
 
     public destinoAdapater(Context context, ArrayList<Destinos> dataDestinos) {
         this.context = context;
         this.dataDestinos = dataDestinos;
+        comentario = new Comentarios();
     }
 
     @Override
@@ -69,7 +67,6 @@ public class destinoAdapater extends BaseAdapter {
         view = LayoutInflater.from(context).inflate(R.layout.item_list,null);
 
         Destinos ds = dataDestinos.get(position);
-
 
         TextView txtnombre= view.findViewById(R.id.lblnameD);
         TextView txtdes= view.findViewById(R.id.lbldesD);
@@ -102,7 +99,7 @@ public class destinoAdapater extends BaseAdapter {
                 cajaComentarios.setVisibility(finalView.VISIBLE);
                 cajaPuntuacion.setVisibility(finalView.VISIBLE);
                 nombreDestino = ds.Direccion;
-                Toast.makeText(context, nombreDestino, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, nombreDestino, Toast.LENGTH_SHORT).show();
             }
         });
         btnEnviar.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +116,7 @@ public class destinoAdapater extends BaseAdapter {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot destinoSnapshot : snapshot.getChildren()){
                             destinoId = destinoSnapshot.getKey();
-                            Toast.makeText(context, destinoId, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context, destinoId, Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -139,47 +136,20 @@ public class destinoAdapater extends BaseAdapter {
                     //Asigamos el id del usuario loguado al comentario
                     String id = mauth.getCurrentUser().getUid();
                     comentario.idUser = id;
+                    comentario.idDestino = destinoId;
 
-                    //Metodos de la lista de datos de android y firebase
-                    reference.addChildEventListener(new ChildEventListener() {
+                    reference.child("Comentario").push().setValue(comentario).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                            reference.child("Comentario").child(destinoId).setValue(comentario).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Toast.makeText(context, "Comentario enviado", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                        }
-
-                        @Override
-                        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(context, "Comentario enviado", Toast.LENGTH_SHORT).show();
                         }
                     });
 
 
                 }
-
             }
-        });
 
+        });
 
         return view;
     }

@@ -23,13 +23,10 @@
         android:id="@+id/fragmentContainerView"
         android:name="com.example.destinos.principalFragment"
         android:layout_width="404dp"
-        android:layout_height="608dp"
+        android:layout_height="594dp"
+        android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.444" />
+        tools:layout_editor_absoluteX="3dp" />
 
     <TextView
         android:id="@+id/lblName"
@@ -48,10 +45,21 @@
         android:id="@+id/btnSalir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:backgroundTint="#EE4E4E"
         android:text="Cerrar session"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnVisualizar"
+        android:layout_width="157dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:backgroundTint="@color/menta"
+        android:text="comentarios"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
