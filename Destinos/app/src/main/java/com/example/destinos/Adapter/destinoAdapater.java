@@ -39,6 +39,7 @@ public class destinoAdapater extends BaseAdapter {
     Comentarios comentario;
     public String destinoId;
     public String nombreDestino;
+    public String nombreUsuario;
 
     public destinoAdapater(Context context, ArrayList<Destinos> dataDestinos) {
         this.context = context;
@@ -136,7 +137,10 @@ public class destinoAdapater extends BaseAdapter {
                     //Asigamos el id del usuario loguado al comentario
                     String id = mauth.getCurrentUser().getUid();
                     comentario.idUser = id;
+
                     comentario.idDestino = destinoId;
+                    comentario.nameDestino = nombreDestino;
+                    comentario.nameUsuario = nombreUsuario;
 
                     reference.child("Comentario").push().setValue(comentario).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

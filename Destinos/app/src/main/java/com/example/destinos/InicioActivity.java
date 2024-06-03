@@ -36,6 +36,7 @@ public class InicioActivity extends AppCompatActivity {
     TextView userName;
     private FirebaseAuth mauth;
     public DatabaseReference reference;
+    public String name;
     //-----------------------------------------------------------
 
 
@@ -133,7 +134,7 @@ public class InicioActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    String name = snapshot.child("nameUser").getValue().toString();
+                    name = snapshot.child("nameUser").getValue().toString();
                     userName.setText(name);
                 }
             }
