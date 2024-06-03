@@ -117,7 +117,7 @@ public class destinoAdapater extends BaseAdapter {
                         }
 
                         // Validamos que no hayan campos vacíos
-                        if (cajaComentarios.getText().toString().isEmpty() && cajaPuntuacion.getText().toString().isEmpty()) {
+                        if (cajaComentarios.getText().toString().isEmpty() || cajaPuntuacion.getText().toString().isEmpty()) {
                             Toast.makeText(context, "Aun no has comentado nada viajero", Toast.LENGTH_SHORT).show();
                         } else {
                             comentario.comment = cajaComentarios.getText().toString();
@@ -138,10 +138,6 @@ public class destinoAdapater extends BaseAdapter {
                                             String nombreUsuario = dataSnapshot.child("nameUser").getValue(String.class);
                                             comentario.nameUsuario = nombreUsuario;
 
-
-
-                                            Toast.makeText(context, "Comentario enviado por: " + nombreUsuario, Toast.LENGTH_SHORT).show();
-
                                             comentario.idDestino = destinoId;
                                             comentario.nameDestino = nombreDestino;
 
@@ -152,12 +148,16 @@ public class destinoAdapater extends BaseAdapter {
                                                     Toast.makeText(context, "Comentario enviado", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
+                                        } else {
+                                            // Si no se encuentra el nombre de usuario, muestra un mensaje de error
+                                            Toast.makeText(context, "Error: No se ha encontrado el nombre de usuario", Toast.LENGTH_SHORT).show();
                                         }
                                     }
 
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                        // Manejar error de consulta cancelada
+                                        Toast.makeText(context, "Error: La consulta fue cancelada", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             } else {
@@ -169,7 +169,8 @@ public class destinoAdapater extends BaseAdapter {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                       
+                        // Manejar error de consulta cancelada
+                        Toast.makeText(context, "Error: La consulta fue cancelada", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
