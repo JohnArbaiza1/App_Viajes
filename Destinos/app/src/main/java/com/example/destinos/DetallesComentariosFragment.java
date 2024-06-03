@@ -8,9 +8,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.destinos.Adapter.CommentsAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -30,9 +36,8 @@ public class DetallesComentariosFragment extends Fragment {
     //Atributos de la clase
     private ListView listView;
     private CommentsAdapter adapter;
-    private Button btnRegresa;
-    private ArrayList<Comentarios> comentariosList;
-
+    private ArrayList<Comentarios> listaComentarios;
+    Button btnRegresa;
     //-----------------------------------------------
 
     // TODO: Rename and change types of parameters
@@ -76,45 +81,40 @@ public class DetallesComentariosFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_detalles_comentarios, container, false);
-
         //-------------------------------------------------------
         //Capturamos los id
         listView = root.findViewById(R.id.listaComentarios);
         btnRegresa = root.findViewById(R.id.btnRegresarExplorar);
         //-------------------------------------------------------
-        comentariosList = new ArrayList<>();
-        adapter = new CommentsAdapter(getContext(),comentariosList);
+        listaComentarios = new ArrayList<>();
+        adapter  = new CommentsAdapter(getContext(),listaComentarios);
         listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        //---------------------------------------------------------
-//
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Comentario");
-//
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                comentariosList.clear();
-//                for (DataSnapshot postSnapshot : snapshot.getChildren()){
-//
-//                    String comentario = postSnapshot.child("comment").getValue(String.class);
-//                    int puntuacion = (int) postSnapshot.child("puntuacion").getValue(int.class);
-//                    String idDestino = postSnapshot.child("idDestino").getValue(String.class);
-//                    String idUs = postSnapshot.child("idUser").getValue(String.class);
-//
-//                    if (comentario != null && puntuacion != 0 && idDestino != null  && idUs != null) {
-//
-//                        Comentarios comentarios= new Comentarios( comentario,idDestino,idUs,puntuacion);
-//                        comentariosList.add(comentarios);
-//                    }
-//                }
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Comentario");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listaComentarios.clear();
+                for(DataSnapshot comentarioSnap: snapshot.getChildren()){
+                    String comentario = comentarioSnap.child("comment").getValue(String.class);
+                    String puntos = comentarioSnap.child("puntuacion").getValue(String.class);
+                    String nameUs = comentarioSnap.child("nameUsuario").getValue(String.class);
+                    String nameDest = comentarioSnap.child("nameDestino").getValue(String.class);
+
+                    if(comentario != null && puntos != null && nameUs != null && nameDest != null){
+                        Comentarios comentar = new Comentarios(comentario,Integer.parseInt(puntos),nameUs,nameDest);
+                        listaComentarios.add(comentar);
+
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         return root;
     }
