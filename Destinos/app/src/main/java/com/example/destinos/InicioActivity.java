@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,16 +25,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
-import java.security.Principal;
-
 public class InicioActivity extends AppCompatActivity {
 
     //-----------------------------------------------------------
     //Atributos de la clase
     //-----------------------------------------------------------
-    public Fragment home,explorar,favorite,agregar;
+    public Fragment home,explorar,favorite,agregar,visualizar;
     BottomNavigationView menu;
     Button btnExit;
     TextView userName;
@@ -59,13 +54,16 @@ public class InicioActivity extends AppCompatActivity {
         menu = findViewById(R.id.menuApp);
         btnExit = findViewById(R.id.btnSalir);
         userName = findViewById(R.id.lblName);
+        Button btnvercomment = findViewById(R.id.btnVisualizar);
         //---------------------------------------------------------------
         home = new principalFragment();
         explorar = new ExploprarFragment();
         favorite = new favoriteDestinationFragment();
         agregar= new AgregarDestinosFragment();
+        visualizar = new DetallesComentariosFragment();
         //---------------------------------------------------------------
         btnExit.setVisibility(View.VISIBLE);
+        btnvercomment.setVisibility(View.INVISIBLE);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -83,21 +81,25 @@ public class InicioActivity extends AppCompatActivity {
                     case R.id.home:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,home).commit();
                         btnExit.setVisibility(View.VISIBLE);
+                        btnvercomment.setVisibility(View.INVISIBLE);
                     break;
 
                     case R.id.eventos:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,agregar).commit();
                         btnExit.setVisibility(View.INVISIBLE);
+                        btnvercomment.setVisibility(View.INVISIBLE);
                         break;
 
                     case R.id.explo:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,explorar).commit();
                         btnExit.setVisibility(View.INVISIBLE);
+                        btnvercomment.setVisibility(View.VISIBLE);
                     break;
 
                     case R.id.favorite:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,favorite).commit();
                         btnExit.setVisibility(View.INVISIBLE);
+                        btnvercomment.setVisibility(View.INVISIBLE);
                     break;
                 }
                 return true;
@@ -110,6 +112,13 @@ public class InicioActivity extends AppCompatActivity {
                 mauth.signOut();
                 startActivity(new Intent(InicioActivity.this, MainActivity.class));
                 finish();
+            }
+        });
+
+        btnvercomment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,visualizar).commit();
             }
         });
 
