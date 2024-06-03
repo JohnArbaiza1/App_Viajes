@@ -7,14 +7,13 @@ public class Comentarios {
     public String idDestino;
     public String comment;
     public int puntuacion;
-
     public String nameUsuario;
     public String nameDestino;
 
     //Constructor
-    public Comentarios(String idUser, String idDestino, String comment, int puntuacion, String nameUsuario, String nameDestino) {
-        this.idUser = idUser;
-        this.idDestino = idDestino;
+
+
+    public Comentarios(String comment, int puntuacion, String nameUsuario, String nameDestino) {
         this.comment = comment;
         this.puntuacion = puntuacion;
         this.nameUsuario = nameUsuario;
