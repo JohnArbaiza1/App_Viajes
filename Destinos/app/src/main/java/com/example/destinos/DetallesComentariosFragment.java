@@ -90,7 +90,7 @@ public class DetallesComentariosFragment extends Fragment {
         adapter  = new CommentsAdapter(getContext(),listaComentarios);
         listView.setAdapter(adapter);
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Comentario");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Destinos").child("Comentario");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -102,7 +102,7 @@ public class DetallesComentariosFragment extends Fragment {
                     String nameDest = comentarioSnap.child("nameDestino").getValue(String.class);
 
                     if(comentario != null && puntos != null && nameUs != null && nameDest != null){
-                        Comentarios comentar = new Comentarios(comentario,Integer.parseInt(puntos),nameUs,nameDest);
+                        Comentarios comentar = new Comentarios(comentario,puntos,nameUs,nameDest);
                         listaComentarios.add(comentar);
 
                     }

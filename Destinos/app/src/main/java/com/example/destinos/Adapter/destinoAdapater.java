@@ -1,7 +1,6 @@
 package com.example.destinos.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +120,7 @@ public class destinoAdapater extends BaseAdapter {
                             Toast.makeText(context, "Aun no has comentado nada viajero", Toast.LENGTH_SHORT).show();
                         } else {
                             comentario.comment = cajaComentarios.getText().toString();
-                            comentario.puntuacion = Integer.parseInt(cajaPuntuacion.getText().toString());
+                            comentario.puntuacion = cajaPuntuacion.getText().toString();
 
                             // Asignamos el id del usuario logueado al comentario
                             FirebaseUser currentUser = mauth.getCurrentUser();

@@ -2,18 +2,17 @@ package com.example.destinos;
 
 public class Comentarios {
 
-    InicioActivity inicioActivity = new InicioActivity();
     public String idUser;
     public String idDestino;
     public String comment;
-    public int puntuacion;
+    public String puntuacion;
     public String nameUsuario;
     public String nameDestino;
 
     //Constructor
 
 
-    public Comentarios(String comment, int puntuacion, String nameUsuario, String nameDestino) {
+    public Comentarios(String comment, String puntuacion, String nameUsuario, String nameDestino) {
         this.comment = comment;
         this.puntuacion = puntuacion;
         this.nameUsuario = nameUsuario;
@@ -22,6 +21,8 @@ public class Comentarios {
 
     public Comentarios() {
     }
+
+
 
     public String getIdUser() {
         return idUser;
@@ -47,11 +48,11 @@ public class Comentarios {
         this.comment = comment;
     }
 
-    public int getPuntuacion() {
+    public String getPuntuacion() {
         return puntuacion;
     }
 
-    public void setPuntuacion(int puntuacion) {
+    public void setPuntuacion(String puntuacion) {
         this.puntuacion = puntuacion;
     }
 
