@@ -1,12 +1,25 @@
 package com.example.destinos;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.example.destinos.Adapter.favoritosAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,10 +37,26 @@ public class favoriteDestinationFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private  String idUser;
+
+    private ListView ls;
+
+    private List<String> dataDestinosfav;
+
+    private DatabaseReference favRef;
+
+
+    private favoritosAdapter adapter;
+
     public favoriteDestinationFragment() {
         // Required empty public constructor
     }
 
+    public favoriteDestinationFragment(String iduser) {
+        // Required empty public constructor
+
+        this.idUser= iduser;
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -55,10 +84,48 @@ public class favoriteDestinationFragment extends Fragment {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_destination, container, false);
+
+        View root = inflater.inflate(R.layout.fragment_favorite_destination,container,false);
+
+        ls= root.findViewById(R.id.listFav);
+        dataDestinosfav= new ArrayList<>();
+
+        favRef= FirebaseDatabase.getInstance().getReference("Usuarios").child(idUser).child("Favoritos");
+
+
+        favRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    dataDestinosfav.clear();
+
+                    for(DataSnapshot fav: snapshot.getChildren()){
+
+                        String idDestino= fav.child("idDestino").getValue(String.class);
+
+                        if(idDestino != null){
+
+                            dataDestinosfav.add(idDestino);
+                        }
+                    }
+                    adapter= new favoritosAdapter(dataDestinosfav,getContext(),idUser);
+                    ls.setAdapter(adapter);
+
+                }
+                }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        return root;
     }
 }

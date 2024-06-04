@@ -38,10 +38,15 @@ public class ExploprarFragment extends Fragment {
     private ListView listView;
     private destinoAdapater adapter;
     private ArrayList<Destinos> destinoList;
+
+    private String idUser;
     public ExploprarFragment() {
         // Required empty public constructor
     }
+    public ExploprarFragment(String iduser) {
 
+        this.idUser= iduser;
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -76,12 +81,12 @@ public class ExploprarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_exploprar, container, false);
         listView = view.findViewById(R.id.listView);
         destinoList = new ArrayList<>();
-        adapter = new destinoAdapater(getContext(), destinoList);
+        adapter = new destinoAdapater(getContext(), destinoList,idUser);
         listView.setAdapter(adapter);
 
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Destinos");
-
+        //DatabaseReference refejemplo = FirebaseDatabase.getInstance().getReference("Usuarios").child(idUser).child("Favoritos");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -96,7 +101,7 @@ public class ExploprarFragment extends Fragment {
 
                     if (descripcion != null && nombre != null && direccion != null && urlImagen != null ) {
 
-                        Destinos destino = new Destinos(descripcion, nombre, direccion, urlImagen);
+                        Destinos destino = new Destinos(postSnapshot.getKey(),descripcion, direccion,nombre, urlImagen ,postSnapshot.child("iduser").getValue(String.class) );
                         destinoList.add(destino);
                     }
                 }

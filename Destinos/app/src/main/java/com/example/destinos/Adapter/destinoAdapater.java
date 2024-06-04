@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import com.example.destinos.Comentarios;
 import com.example.destinos.Destinos;
 import com.example.destinos.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,20 +29,25 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class destinoAdapater extends BaseAdapter {
 
     private Context context;
     private ArrayList<Destinos> dataDestinos;
-    private DatabaseReference reference;
+    private DatabaseReference reference, referenceUser,ref;
     private FirebaseAuth mauth;
     private Comentarios comentario;
     private String destinoId;
     private String nombreDestino;
 
-    public destinoAdapater(Context context, ArrayList<Destinos> dataDestinos) {
+    private String idUser;
+
+    public destinoAdapater(Context context, ArrayList<Destinos> dataDestinos, String iduser) {
         this.context = context;
         this.dataDestinos = dataDestinos;
+        this.idUser= iduser;
         comentario = new Comentarios();
     }
 
@@ -66,15 +72,42 @@ public class destinoAdapater extends BaseAdapter {
 
         Destinos ds = dataDestinos.get(position);
 
-        TextView txtnombre = view.findViewById(R.id.lblnameD);
-        TextView txtdes = view.findViewById(R.id.lbldesD);
-        TextView txtdire = view.findViewById(R.id.lbldireD);
-        ImageView img = view.findViewById(R.id.imageView3);
+        TextView txtnombre = view.findViewById(R.id.lblnameF);
+        TextView txtdes = view.findViewById(R.id.lbldesDF);
+        TextView txtdire = view.findViewById(R.id.lbldireF);
+        TextView lblautor= view.findViewById(R.id.lblautorP);
+        ImageView img = view.findViewById(R.id.imageViewF);
 
-        txtnombre.setText(ds.getNombre());
-        txtdes.setText(ds.getDescripcion());
-        txtdire.setText(ds.getDireccion());
-        Picasso.get().load(ds.getURLImagen()).into(img);
+
+        ref= FirebaseDatabase.getInstance().getReference("Usuarios").child(ds.getIdUser());
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()){
+
+                    txtnombre.setText(ds.getNombre());
+                    txtdes.setText(ds.getDescripcion());
+                    txtdire.setText(ds.getDireccion());
+                    Picasso.get().load(ds.getURLImagen()).into(img);
+                    lblautor.setText(snapshot.child("nameUser").getValue(String.class));
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
 
         //----------------------------------------------------
         ImageButton btnComentarios = view.findViewById(R.id.btnComentar);
@@ -99,6 +132,33 @@ public class destinoAdapater extends BaseAdapter {
                 // Toast.makeText(context, nombreDestino, Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        referenceUser = FirebaseDatabase.getInstance().getReference("Usuarios").child(idUser);
+        btnFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Map<String, Object> Favoritos = new HashMap<>();
+
+                Favoritos.put("idDestino", ds.getIdDestino());
+
+                referenceUser.child("Favoritos").push().setValue(Favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                        Toast.makeText(context, "Se agrego a favoritos", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Error no funca", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }});
+
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,6 +234,8 @@ public class destinoAdapater extends BaseAdapter {
                 });
             }
         });
+
+
 
 
         return view;

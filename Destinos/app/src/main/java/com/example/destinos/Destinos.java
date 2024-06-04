@@ -2,25 +2,28 @@ package com.example.destinos;
 
 public class Destinos {
 
+
+
+    public String idDestino;
     public String Descripcion;
     public String Direccion;
     public String Nombre;
     public String URLImagen;
-    public int idUser;
+
+    public String idUser;
 
     public Destinos() {
 
     }
 
-    public Destinos(String descripcion, String direccion, String nombre, String URLImagen) {
-        Descripcion = descripcion;
-        Direccion = direccion;
-        Nombre = nombre;
+    public Destinos(String idDestino, String descripcion, String direccion, String nombre, String URLImagen, String idUser) {
+        this.idDestino = idDestino;
+        this.Descripcion = descripcion;
+        this.Direccion = direccion;
+        this.Nombre = nombre;
         this.URLImagen = URLImagen;
-
+        this.idUser = idUser;
     }
-
-
 
     public String getDescripcion() {
         return Descripcion;
@@ -54,11 +57,19 @@ public class Destinos {
         this.URLImagen = URLImagen;
     }
 
-    public int getIdUser() {
+    public String getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(String idUser) {
         this.idUser = idUser;
+    }
+
+    public String getIdDestino() {
+        return idDestino;
+    }
+
+    public void setIdDestino(String idDestino) {
+        this.idDestino = idDestino;
     }
 }

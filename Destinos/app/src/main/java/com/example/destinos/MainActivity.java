@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -91,8 +92,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    startActivity(new Intent(MainActivity.this,InicioActivity.class));
-                    finish();
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user != null) {
+                        Intent intent= new Intent(MainActivity.this,InicioActivity.class);
+                        intent.putExtra("idUser",user.getUid());
+                        startActivity(intent);
+                        finish();
+                    }
                 }
                 else{
                     Toast.makeText(MainActivity.this, "Error al iniciar session:Copruebe sus datos", Toast.LENGTH_SHORT).show();
@@ -106,8 +112,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(mauth.getCurrentUser() != null){
-            startActivity(new Intent(MainActivity.this,InicioActivity.class));
-            finish();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                Intent intent= new Intent(MainActivity.this,InicioActivity.class);
+                intent.putExtra("idUser",user.getUid());
+                startActivity(intent);
+                finish();
+            }
         }
     }
 }

@@ -47,6 +47,10 @@ public class InicioActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_inicio);
 
+
+        String idUser= getIntent().getStringExtra("idUser");
+
+
         //---------------------------------------------------------------
         mauth = FirebaseAuth.getInstance();
         reference = FirebaseDatabase.getInstance().getReference();
@@ -58,8 +62,8 @@ public class InicioActivity extends AppCompatActivity {
         Button btnvercomment = findViewById(R.id.btnVisualizar);
         //---------------------------------------------------------------
         home = new principalFragment();
-        explorar = new ExploprarFragment();
-        favorite = new favoriteDestinationFragment();
+        explorar = new ExploprarFragment(idUser);
+        favorite = new favoriteDestinationFragment(idUser);
         agregar= new AgregarDestinosFragment();
         visualizar = new DetallesComentariosFragment();
         //---------------------------------------------------------------
