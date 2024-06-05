@@ -140,26 +140,45 @@ public class destinoAdapater extends BaseAdapter {
         btnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String idDestino = ds.getIdDestino();
 
 
-                Map<String, Object> Favoritos = new HashMap<>();
+                DatabaseReference userFavoritesRef = referenceUser.child("Favoritos");
 
-                Favoritos.put("idDestino", ds.getIdDestino());
 
-                referenceUser.child("Favoritos").push().setValue(Favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {
+                userFavoritesRef.orderByChild("idDestino").equalTo(idDestino).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onSuccess(Void unused) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) { //Verifica si ya existe
 
-                        Toast.makeText(context, "Se agrego a favoritos", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Este destino ya está en tus favoritos", Toast.LENGTH_SHORT).show();
+                        } else {//si no, guarda el id del destino a agregar
+
+                            Map<String, Object> Favoritos = new HashMap<>();
+                            Favoritos.put("idDestino", idDestino);
+
+                            userFavoritesRef.push().setValue(Favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(context, "Se agregó a favoritos", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(context, "Error al agregar a favoritos", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Error no funca", Toast.LENGTH_SHORT).show();
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(context, "Error al verificar los favoritos", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
 
-            }});
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
