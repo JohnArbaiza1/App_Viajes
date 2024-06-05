@@ -23,7 +23,6 @@ public class Comentarios {
     }
 
 
-
     public String getIdUser() {
         return idUser;
     }

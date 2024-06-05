@@ -59,7 +59,6 @@ public class InicioActivity extends AppCompatActivity {
         menu = findViewById(R.id.menuApp);
         btnExit = findViewById(R.id.btnSalir);
         userName = findViewById(R.id.lblName);
-        Button btnvercomment = findViewById(R.id.btnVisualizar);
         //---------------------------------------------------------------
         home = new principalFragment();
         explorar = new ExploprarFragment(idUser);
@@ -68,7 +67,6 @@ public class InicioActivity extends AppCompatActivity {
         visualizar = new DetallesComentariosFragment();
         //---------------------------------------------------------------
         btnExit.setVisibility(View.VISIBLE);
-        btnvercomment.setVisibility(View.INVISIBLE);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -86,25 +84,21 @@ public class InicioActivity extends AppCompatActivity {
                     case R.id.home:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,home).commit();
                         btnExit.setVisibility(View.VISIBLE);
-                        btnvercomment.setVisibility(View.INVISIBLE);
                     break;
 
                     case R.id.eventos:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,agregar).commit();
                         btnExit.setVisibility(View.INVISIBLE);
-                        btnvercomment.setVisibility(View.INVISIBLE);
                         break;
 
                     case R.id.explo:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,explorar).commit();
                         btnExit.setVisibility(View.INVISIBLE);
-                        btnvercomment.setVisibility(View.VISIBLE);
                     break;
 
                     case R.id.favorite:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,favorite).commit();
                         btnExit.setVisibility(View.INVISIBLE);
-                        btnvercomment.setVisibility(View.INVISIBLE);
                     break;
                 }
                 return true;
@@ -117,13 +111,6 @@ public class InicioActivity extends AppCompatActivity {
                 mauth.signOut();
                 startActivity(new Intent(InicioActivity.this, MainActivity.class));
                 finish();
-            }
-        });
-
-        btnvercomment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,visualizar).commit();
             }
         });
 

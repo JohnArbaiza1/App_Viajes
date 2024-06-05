@@ -12,9 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.destinos.Comentarios;
 import com.example.destinos.Destinos;
+import com.example.destinos.DetallesComentariosFragment;
 import com.example.destinos.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,7 +44,9 @@ public class destinoAdapater extends BaseAdapter {
     private FirebaseAuth mauth;
     private Comentarios comentario;
     private String destinoId;
+    public  String idDes;
     private String nombreDestino;
+    Fragment vistas;
 
     private String idUser;
 
@@ -77,7 +83,7 @@ public class destinoAdapater extends BaseAdapter {
         TextView txtdire = view.findViewById(R.id.lbldireF);
         TextView lblautor= view.findViewById(R.id.lblautorP);
         ImageView img = view.findViewById(R.id.imageViewF);
-
+        vistas = new DetallesComentariosFragment();
 
         ref= FirebaseDatabase.getInstance().getReference("Usuarios").child(ds.getIdUser());
 
@@ -95,7 +101,6 @@ public class destinoAdapater extends BaseAdapter {
 
                 }
 
-
             }
 
             @Override
@@ -104,15 +109,11 @@ public class destinoAdapater extends BaseAdapter {
             }
         });
 
-
-
-
-
-
         //----------------------------------------------------
         ImageButton btnComentarios = view.findViewById(R.id.btnComentar);
         ImageButton btnEnviar = view.findViewById(R.id.btnEnviarcoment);
         ImageButton btnFavorites = view.findViewById(R.id.btnFavorite);
+        ImageButton btnver = view.findViewById(R.id.idVerComentario);
         EditText cajaComentarios = view.findViewById(R.id.txtComentarios);
         EditText cajaPuntuacion = view.findViewById(R.id.txtPuntuacion);
         //----------------------------------------------------
@@ -122,13 +123,14 @@ public class destinoAdapater extends BaseAdapter {
         cajaPuntuacion.setVisibility(View.INVISIBLE);
         //---------------------------------------------------
         // Eventos
+        //---------------------------------------------------
         btnComentarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnEnviar.setVisibility(View.VISIBLE);
                 cajaComentarios.setVisibility(View.VISIBLE);
                 cajaPuntuacion.setVisibility(View.VISIBLE);
-                nombreDestino = ds.Direccion;
+                nombreDestino = ds.Nombre;
                 // Toast.makeText(context, nombreDestino, Toast.LENGTH_SHORT).show();
             }
         });
@@ -181,6 +183,7 @@ public class destinoAdapater extends BaseAdapter {
                         } else {
                             comentario.comment = cajaComentarios.getText().toString();
                             comentario.puntuacion = cajaPuntuacion.getText().toString();
+                            System.out.println(destinoId);
 
                             // Asignamos el id del usuario logueado al comentario
                             FirebaseUser currentUser = mauth.getCurrentUser();
@@ -224,8 +227,8 @@ public class destinoAdapater extends BaseAdapter {
                                 Toast.makeText(context, "Error: No se ha encontrado un usuario autenticado", Toast.LENGTH_SHORT).show();
                             }
                         }
+                        
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         // Manejar error de consulta cancelada
@@ -235,9 +238,24 @@ public class destinoAdapater extends BaseAdapter {
             }
         });
 
-
-
+        btnver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               //Obtenemos la posicion y el id del destino donde se encuentra esta
+                String ds = dataDestinos.get(position).getIdDestino();
+                System.out.println("manda "+ ds);
+                //definimos newIntance para mandar el id al fragment
+                DetallesComentariosFragment detalle = DetallesComentariosFragment.newInstance(ds);
+               // Realizamos la transaccion del fragmento
+                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView, detalle)
+                        .addToBackStack(null).commit();// agregamos una  pila de retroceso por si necesarioacaso
+            }
+        });
 
         return view;
     }
+
+
 }

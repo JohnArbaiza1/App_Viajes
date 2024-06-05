@@ -111,9 +111,6 @@ public class favoritosAdapter  extends BaseAdapter {
                         }
                     });
 
-
-
-
                 }
             }
 
@@ -122,10 +119,6 @@ public class favoritosAdapter  extends BaseAdapter {
 
             }
         });
-
-
-
-
 
         return root;
     }
