@@ -227,7 +227,7 @@ public class destinoAdapater extends BaseAdapter {
                                 Toast.makeText(context, "Error: No se ha encontrado un usuario autenticado", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
