@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-
-
     <solid android:color="@color/white"></solid>
     <corners
-        android:topLeftRadius="20dp"
+        android:topLeftRadius="60dp"
 
-        android:bottomRightRadius="20dp"></corners>
+        android:bottomRightRadius="60dp"></corners>
 
-    <stroke android:color="@color/menta"
+    <stroke android:color="#7ECDB1"
         android:width="2dp"></stroke>
 
     <padding
-        android:left="14dp"
-        android:right="14dp"
-        android:top="14dp"
-        android:bottom="14dp"></padding>
+        android:left="10dp"
+        android:right="10dp"
+        android:top="10dp"
+        android:bottom="10dp"></padding>
 
     <gradient
         android:startColor="#97E3C9"></gradient>
-
 
 </shape>

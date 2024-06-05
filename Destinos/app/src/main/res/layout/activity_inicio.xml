@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InicioActivity">
+    tools:context=".InicioActivity"
+    >
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/menuApp"
@@ -22,11 +23,13 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
         android:name="com.example.destinos.principalFragment"
-        android:layout_width="407dp"
-        android:layout_height="595dp"
-        android:layout_marginTop="56dp"
+        android:layout_width="413dp"
+        android:layout_height="608dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="1dp" />
+        app:layout_constraintVertical_bias="0.349" />
 
     <TextView
         android:id="@+id/lblName"
@@ -34,19 +37,20 @@
         android:layout_height="29dp"
         android:layout_marginStart="16dp"
         android:text="TextView"
+        android:textColor="@color/verdoOscuro"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.019" />
 
     <Button
         android:id="@+id/btnSalir"
-        android:layout_width="181dp"
-        android:layout_height="43dp"
-        android:backgroundTint="#EE4E4E"
-        android:text="Cerrar session"
+        android:layout_width="67dp"
+        android:layout_height="39dp"
+        android:backgroundTint="@color/menta"
+        app:icon="@drawable/exit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
