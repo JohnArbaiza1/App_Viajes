@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -89,9 +90,14 @@ public class DetallesComentariosFragment extends Fragment {
         listaComentarios = new ArrayList<>();
         adapter  = new CommentsAdapter(getContext(),listaComentarios);
         listView.setAdapter(adapter);
+        String idDestino = getArguments().getString("DESTINO_ID");
+        System.out.println("datos"+ idDestino);
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Destinos").child("Comentario");
-        reference.addValueEventListener(new ValueEventListener() {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Destinos");
+        //Comentarios dato = new Comentarios();
+        Query query = reference.child("Comentario").orderByChild("idDestino").equalTo(idDestino);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listaComentarios.clear();
@@ -108,6 +114,7 @@ public class DetallesComentariosFragment extends Fragment {
                     }
                 }
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -115,7 +122,27 @@ public class DetallesComentariosFragment extends Fragment {
 
             }
         });
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
         return root;
     }
+
+    public static DetallesComentariosFragment newInstance(String destinoId) {
+        DetallesComentariosFragment fragment = new DetallesComentariosFragment();
+        Bundle args = new Bundle();
+        args.putString("DESTINO_ID", destinoId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 }
