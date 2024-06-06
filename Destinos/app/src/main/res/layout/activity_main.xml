@@ -41,13 +41,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:hint="Password">
+                    android:hint="Password"
+                    >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/pass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white" />
+                        android:background="@color/white"
+                        android:inputType="textPassword"
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
             </com.google.android.material.textfield.TextInputLayout>
 
