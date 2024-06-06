@@ -2,7 +2,6 @@ package com.example.destinos;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -88,16 +87,20 @@ public class MainActivity extends AppCompatActivity {
 
     //Metodo que se encarga del incio de session
     private void loginApp(){
+        //Nos ayuda a poder ingresar con las credenciales pedidas al usuario
         mauth.signInWithEmailAndPassword(correoUser,passwordUser).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                //validamos si la operacion fue exitosa  obtenemos al usuario autehnticado
                 if(task.isSuccessful()){
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    //verificamos que no sea nulo
                     if (user != null) {
+                        //Enviamos al usuario al inicio de la app
                         Intent intent= new Intent(MainActivity.this,InicioActivity.class);
                         intent.putExtra("idUser",user.getUid());
                         startActivity(intent);
-                        finish();
+                        finish(); // para que no puede regresar a esta tarea
                     }
                 }
                 else{
