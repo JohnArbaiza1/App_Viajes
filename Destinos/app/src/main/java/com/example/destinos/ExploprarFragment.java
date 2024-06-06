@@ -84,28 +84,35 @@ public class ExploprarFragment extends Fragment {
         adapter = new destinoAdapater(getContext(), destinoList,idUser);
         listView.setAdapter(adapter);
 
-
+//Crea una referencia a la ubicación específica en la base de datos de Firebase donde se encuentran almacenados los destinos.
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Destinos");
+
+
+
         //DatabaseReference refejemplo = FirebaseDatabase.getInstance().getReference("Usuarios").child(idUser).child("Favoritos");
+
+        //creamos el  evento para manejar las actualizaciones de la informacion
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                destinoList.clear();
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                destinoList.clear();  //limpiamos para evitar duplicidad de informacion
 
-                    String descripcion = postSnapshot.child("Descripcion").getValue(String.class);
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) { //iteramos en cada hijo de destinos es decir los que vamos agregando en el nodo
+
+                    String descripcion = postSnapshot.child("Descripcion").getValue(String.class); //obtenemos los valores desde firebase
                     String nombre = postSnapshot.child("Nombre").getValue(String.class);
                     String direccion = postSnapshot.child("Direccion").getValue(String.class);
                     String urlImagen = postSnapshot.child("URLImagen").getValue(String.class);
 
-
+                    //verificamos que ningun valor sea nulo
                     if (descripcion != null && nombre != null && direccion != null && urlImagen != null ) {
 
+                        // creamos el objeto con todos los datos
                         Destinos destino = new Destinos(postSnapshot.getKey(),descripcion, direccion,nombre, urlImagen ,postSnapshot.child("iduser").getValue(String.class) );
-                        destinoList.add(destino);
+                        destinoList.add(destino); //agregamos ese destino a la lista
                     }
                 }
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged(); //mandamos cambios al adapter
             }
 
             @Override

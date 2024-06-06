@@ -106,24 +106,26 @@ public class destinoAdapater extends BaseAdapter {
         //------------------------------------------------------------------------
 
         vistas = new DetallesComentariosFragment();
-        ref= FirebaseDatabase.getInstance().getReference("Usuarios").child(ds.getIdUser());
+
+
+        ref= FirebaseDatabase.getInstance().getReference("Usuarios").child(ds.getIdUser()); //referencia a Usuarios para obtener su id y mostra la informacion
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(snapshot.exists()){
+                if(snapshot.exists()){ //verificamos si existe un destino
 
-                    txtnombre.setText(ds.getNombre());
+                    txtnombre.setText(ds.getNombre());     //si lo hay mandamos la informacion donde la queremos mostrar en los elementos
                     txtdes.setText(ds.getDescripcion());
                     txtdire.setText(ds.getDireccion());
-                    Picasso.get().load(ds.getURLImagen()).into(img);
-                    lblautor.setText(snapshot.child("nameUser").getValue(String.class));
+                    Picasso.get().load(ds.getURLImagen()).into(img); //utilizamos picasso para manejar la imagen
+                    lblautor.setText(snapshot.child("nameUser").getValue(String.class)); // accedemos al usuario de quien lo creo
 
                 }
 
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {  //manejando errores
 
             }
         });
@@ -157,13 +159,13 @@ public class destinoAdapater extends BaseAdapter {
         });
         //Fin del primer evento
         //------------------------------------------------------------------------
-        referenceUser = FirebaseDatabase.getInstance().getReference("Usuarios").child(idUser);
+        referenceUser = FirebaseDatabase.getInstance().getReference("Usuarios").child(idUser); //referencia de nodo usuarios
         //------------------------------------------------------------------------
-        btnFavorites.setOnClickListener(new View.OnClickListener() {
+        btnFavorites.setOnClickListener(new View.OnClickListener() { //evento del boton
             @Override
             public void onClick(View v) {
-                String idDestino = ds.getIdDestino();
-                DatabaseReference userFavoritesRef = referenceUser.child("Favoritos");
+                String idDestino = ds.getIdDestino();  //obtenemos el id del destino
+                DatabaseReference userFavoritesRef = referenceUser.child("Favoritos"); //referencia  a favoritos que es un subnodo de Usuarios
                 userFavoritesRef.orderByChild("idDestino").equalTo(idDestino).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -173,11 +175,11 @@ public class destinoAdapater extends BaseAdapter {
                         } else {//si no, guarda el id del destino a agregar
 
                             Map<String, Object> Favoritos = new HashMap<>();
-                            Favoritos.put("idDestino", idDestino);
+                            Favoritos.put("idDestino", idDestino); //creamos el mapeo  y solo guardamos el id  del destino
 
                             userFavoritesRef.push().setValue(Favoritos).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(Void unused) {
+                                public void onSuccess(Void unused) {  //indicamos si se guardo o no
                                     Toast.makeText(context, "Se agregó a favoritos", Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {

@@ -70,25 +70,27 @@ public class favoritosAdapter extends BaseAdapter {
         ImageView img = root.findViewById(R.id.imageViewF);
         ImageButton deletefav = root.findViewById(R.id.imageButton);
 
-        String idDestino = listaFav.get(position);
+        String idDestino = listaFav.get(position); // obtenemos el id del destino almacenado en nuestra lista
 
+        //referenciamos a nuestro subnodo por medio de su id
         userfavref = FirebaseDatabase.getInstance().getReference("Usuarios").child(idUser).child("Favoritos");
 
-        deletefav.setOnClickListener(new View.OnClickListener() {
+
+        deletefav.setOnClickListener(new View.OnClickListener() { //evento de eliminar
             @Override
             public void onClick(View v) {
-                // Buscar el destino en la lista de favoritos y eliminarlo
+                // Ordena y Busca el destino en la lista de favoritos
                 userfavref.orderByChild("idDestino").equalTo(idDestino).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        if (dataSnapshot.exists()) { //si existe
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {//itera sobre  los elementos
+                                snapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() { //lo eliminamos
                                     @Override
-                                    public void onSuccess(Void unused) {
+                                    public void onSuccess(Void unused) { //mandamos un mensaje que informe al usuario
                                         Toast.makeText(context, "Se eliminó de favoritos", Toast.LENGTH_SHORT).show();
-                                        listaFav.remove(position);
-                                        notifyDataSetChanged();
+                                        listaFav.remove(position); //eliminamos tambien de la lista
+                                        notifyDataSetChanged(); //actualizamos
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -110,28 +112,30 @@ public class favoritosAdapter extends BaseAdapter {
             }
         });
 
+        //referencia a destinos  para identificar un destino en especifico
         destinosref = FirebaseDatabase.getInstance().getReference("Destinos").child(idDestino);
 
         destinosref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
+                if (snapshot.exists()) { //si existe
+                    //hacemos la referencia para obtener el id del usuario que se genera en destinos
                     userref = FirebaseDatabase.getInstance().getReference("Usuarios").child(snapshot.child("iduser").getValue(String.class));
 
                     userref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshotUser) {
-                            if (snapshotUser.exists()) {
-                                Destinos dt = new Destinos(snapshot.getKey(),
+                            if (snapshotUser.exists()) {//si existe
+                                Destinos dt = new Destinos(snapshot.getKey(),  //primero la key unica
                                         snapshot.child("Descripcion").getValue(String.class),
-                                        snapshot.child("Direccion").getValue(String.class),
+                                        snapshot.child("Direccion").getValue(String.class), // luego traemos la demas informacion
                                         snapshot.child("Nombre").getValue(String.class),
                                         snapshot.child("URLImagen").getValue(String.class),
-                                        snapshotUser.child("nameUser").getValue(String.class));
+                                        snapshotUser.child("nameUser").getValue(String.class)); //el id del usuario
 
                                 lbldes.setText(dt.getDescripcion());
                                 lbldire.setText(dt.getDireccion());
-                                lblnombre.setText(dt.getNombre());
+                                lblnombre.setText(dt.getNombre());  //mandamos la info a donde la queremos mostrar
                                 Picasso.get().load(dt.getURLImagen()).into(img);
                                 lblautor.setText(dt.getIdUser());
                             }

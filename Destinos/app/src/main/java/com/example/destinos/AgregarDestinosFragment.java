@@ -81,7 +81,7 @@ public class AgregarDestinosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_agregar_destinos, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference(); //referencias para conocer usuario actual y guardado de imagen
         mStorage = FirebaseStorage.getInstance().getReference();
 
         descripcionField = view.findViewById(R.id.txtdescriD);
@@ -91,69 +91,77 @@ public class AgregarDestinosFragment extends Fragment {
         Button subirImagenButton = view.findViewById(R.id.btngaleria);
         Button guardarButton = view.findViewById(R.id.btnguardardestino);
 
-        subirImagenButton.setOnClickListener(v -> abrirGaleria());
+        subirImagenButton.setOnClickListener(v -> abrirGaleria()); //eventos de los botones
         guardarButton.setOnClickListener(v -> guardarDatos());
 
         return view;
     }
-
+//funcion del primer evento
     private void abrirGaleria() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST); //realizamos un intent para poder abrir y la galeria y capturar los elementos que seleccionemos
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //verificamos si la solicitud se realizo con exito y no devolvio ninguna valor nulo
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
+            imageUri = data.getData(); // obtenemos la url
+            imageView.setImageURI(imageUri); // la mandamos
         }
     }
 
     private void guardarDatos() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser(); //obtenemos el usuario autentificado
         if (currentUser == null) {
 
             Toast.makeText(getContext(), "Por favor, inicie sesión para continuar", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }//si es nulo manda un mensaje
 
-        String descripcion = descripcionField.getText().toString().trim();
+        String descripcion = descripcionField.getText().toString().trim(); //  y si no obtenemos la info de los editText
         String direccion = direccionField.getText().toString().trim();
         String nombre = nombreField.getText().toString().trim();
 
+        //verificamos que no vaya ninguno vacio
         if (descripcion.isEmpty() || direccion.isEmpty() || nombre.isEmpty() || imageUri == null) {
             Toast.makeText(getContext(), "Por favor, complete todos los campos y seleccione una imagen", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //creamos la referencia donde indicamos la carpeta y la extension que tendran los elementos a guardar
 
         StorageReference fileRef = mStorage.child("images/" + System.currentTimeMillis() + ".jpg");
 
 
-        fileRef.putFile(imageUri)
+        fileRef.putFile(imageUri) //subimos la imagen
                 .addOnSuccessListener(taskSnapshot -> {
-
+                    //obtenenemos la url
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        String imageUrl = uri.toString();
+                        String imageUrl = uri.toString(); //lo convertimos a una cadena de texto
 
+                        //llamamos al metodo que manejara el envio de los datos y sus parametros
                         guardarEnFirebase(currentUser.getUid(), descripcion, direccion, nombre, imageUrl);
                     });
                 })
+                //por si falla la subida de la imagen
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error al subir la imagen: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
+
+    //metodo para guardar
     private void guardarEnFirebase(String userId, String descripcion, String direccion, String nombre, String imageUrl) {
 
-        DatabaseReference destinosRef = mDatabase.child("Destinos");
+        DatabaseReference destinosRef = mDatabase.child("Destinos"); // referencia a nuestro nodo Destinos
 
 
-        String key = destinosRef.push().getKey();
+        String key = destinosRef.push().getKey(); // generamos una key  principal que representara los id de los destinos
 
 
-        Map<String, Object> destinoMap = new HashMap<>();
+        //creamos un mapa de datos
+        Map<String, Object> destinoMap = new HashMap<>(); // y con el metodo push vamos ingresando los valores a rellenar en nuestro nodo
         destinoMap.put("iduser", userId);
         destinoMap.put("Descripcion", descripcion);
         destinoMap.put("Direccion", direccion);
@@ -161,12 +169,12 @@ public class AgregarDestinosFragment extends Fragment {
         destinoMap.put("URLImagen", imageUrl);
 
 
-        destinosRef.child(key).setValue(destinoMap)
+        destinosRef.child(key).setValue(destinoMap) // luego le pasamos la key unica en este caso su id  y luego el mapeo de informacion
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
                     
                     descripcionField.setText("");
-                    direccionField.setText("");
+                    direccionField.setText("");       //si se guardo correctamente mandamos un mensaje y limpiamos los campos
                     nombreField.setText("");
                     imageView.setImageDrawable(null);
                     imageUri = null;

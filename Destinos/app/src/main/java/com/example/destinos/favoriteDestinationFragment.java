@@ -78,21 +78,23 @@ public class favoriteDestinationFragment extends Fragment {
         ls = root.findViewById(R.id.listFav);
         dataDestinosfav = new ArrayList<>();
 
+        //hacemos la referencia de favoritos
         favRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(idUser).child("Favoritos");
 
         favRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dataDestinosfav.clear();
-                if (snapshot.exists()) {
-                    for (DataSnapshot fav : snapshot.getChildren()) {
-                        String idDestino = fav.child("idDestino").getValue(String.class);
+                dataDestinosfav.clear(); //limpiamos la lista
+                if (snapshot.exists()) {  //verificamos si existe
+
+                    for (DataSnapshot fav : snapshot.getChildren()) { //iteramos en cada nodo
+                        String idDestino = fav.child("idDestino").getValue(String.class); //obtenemos el id
                         if (idDestino != null) {
-                            dataDestinosfav.add(idDestino);
+                            dataDestinosfav.add(idDestino); //lo mandamos a la lista
                         }
                     }
                 }
-                adapter = new favoritosAdapter(dataDestinosfav, getContext(), idUser, mensaje);
+                adapter = new favoritosAdapter(dataDestinosfav, getContext(), idUser, mensaje); // parametros del adapter
                 ls.setAdapter(adapter);
                 // Actualizar visibilidad del mensaje aquí también
                 if (dataDestinosfav.isEmpty()) {
