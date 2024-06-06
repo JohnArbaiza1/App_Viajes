@@ -6,7 +6,7 @@
 
         android:bottomRightRadius="60dp"></corners>
 
-    <stroke android:color="#7ECDB1"
+    <stroke android:color="@color/verdoOscuro"
         android:width="2dp"></stroke>
 
     <padding
@@ -16,6 +16,7 @@
         android:bottom="10dp"></padding>
 
     <gradient
-        android:startColor="#97E3C9"></gradient>
+        android:startColor="#97E3C9"
+        android:endColor="@color/white"></gradient>
 
 </shape>

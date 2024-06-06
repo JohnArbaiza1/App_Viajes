@@ -39,7 +39,6 @@ public class InicioActivity extends AppCompatActivity {
     public String name;
     //-----------------------------------------------------------
 
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +46,7 @@ public class InicioActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_inicio);
 
-
         String idUser= getIntent().getStringExtra("idUser");
-
 
         //---------------------------------------------------------------
         mauth = FirebaseAuth.getInstance();
