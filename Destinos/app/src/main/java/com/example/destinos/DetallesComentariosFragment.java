@@ -95,29 +95,31 @@ public class DetallesComentariosFragment extends Fragment {
         listView.setAdapter(adapter);
         String idDestino = getArguments().getString("DESTINO_ID");
         System.out.println("datos"+ idDestino);
-
-
+        //--------------------------------------------------------------------------------------------------
+        //Hacemos referencia al nodo de Destinos
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Destinos");
-        //Comentarios dato = new Comentarios();
+        //Definimos una query para buscar aquellos comentarios que esten relacionados por el id de un
+        //destino en especifico
         Query query = reference.child("Comentario").orderByChild("idDestino").equalTo(idDestino);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Limpiamos la lista
                 listaComentarios.clear();
+                //Iteramos a través de los hijos del snapshot buscando los comentarios relacionados con el destino específico.
                 for(DataSnapshot comentarioSnap: snapshot.getChildren()){
                     String comentario = comentarioSnap.child("comment").getValue(String.class);
                     String puntos = comentarioSnap.child("puntuacion").getValue(String.class);
                     String nameUs = comentarioSnap.child("nameUsuario").getValue(String.class);
                     String nameDest = comentarioSnap.child("nameDestino").getValue(String.class);
 
+                    //Verificamos que los valores extraídos no sean nulos
                     if(comentario != null && puntos != null && nameUs != null && nameDest != null){
                         Comentarios comentar = new Comentarios(comentario,puntos,nameUs,nameDest);
                         listaComentarios.add(comentar);
-
                     }
                 }
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -125,25 +127,27 @@ public class DetallesComentariosFragment extends Fragment {
 
             }
         });
-
+        //--------------------------------------------------------------------------------------------------
         btnRegresa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,explorar).commit();
-
             }
         });
-
+        //--------------------------------------------------------------------------------------------------
 
         return root;
     }
 
+    //Definimos  un metodo static para crear una nueva instancia DetallesComentariosFragment
     public static DetallesComentariosFragment newInstance(String destinoId) {
         DetallesComentariosFragment fragment = new DetallesComentariosFragment();
+        //bjeto Bundle para almacenar argumentos
         Bundle args = new Bundle();
+        //agregamos el valor utilizando una clave  con un valor asociado
         args.putString("DESTINO_ID", destinoId);
+        //Asignamos el Bundle de argumentos a la instancia del fragmento utilizando el método setArguments().
         fragment.setArguments(args);
         return fragment;
     }
-
 }
