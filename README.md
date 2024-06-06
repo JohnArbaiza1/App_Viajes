@@ -16,7 +16,7 @@ Para conocer un poco más de las herramientas que se han implementado puedes vis
 
 ## Instalación 🔧
 
-Actualmente destinos solo se encuentra en este repositorio para poder tenerlo solo clona nuestro repositorio.
+Actualmente destinos solo se encuentra en este repositorio de GitHub para poder tenerlo solo clona nuestro repositorio.
 
 ```
  git clone https://github.com/JohnArbaiza1/App_Viajes.git 
@@ -43,7 +43,7 @@ Tener instalado Android Studio para poder ejecutar el proyecto  e instalar la ap
 
   ![2024-06-06 09_22_26-@John - Discord](https://github.com/JohnArbaiza1/App_Viajes/assets/102486877/5f574acf-0527-43de-b689-edfe6672872f)
 
-  Si ya cuentas con una cuenta ingresa los datos requeridos y estarás en la actividad de inicio.
+  Si ya posees una cuenta ingresa los datos requeridos y estarás en la actividad de inicio.
 
 * Registro de nuevo usuario.
 
