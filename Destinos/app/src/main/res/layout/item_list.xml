@@ -22,8 +22,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="404dp"
-        android:layout_height="407dp"
+        android:layout_width="403dp"
+        android:layout_height="445dp"
         android:layout_marginTop="264dp"
         android:background="@drawable/bordes2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,24 +108,25 @@
             android:id="@+id/textView8"
             android:layout_width="122dp"
             android:layout_height="24dp"
-            android:layout_marginTop="84dp"
+            android:layout_marginTop="76dp"
             android:fontFamily="serif"
             android:text="Descripcion:"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.457"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lblnameF" />
 
         <TextView
             android:id="@+id/lbldesDF"
-            android:layout_width="314dp"
-            android:layout_height="65dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="374dp"
+            android:layout_height="115dp"
+            android:layout_marginTop="4dp"
             android:gravity="center"
             android:justificationMode="inter_word"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.448"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -149,8 +150,7 @@
             android:background="@android:color/transparent"
             app:layout_constraintStart_toEndOf="@+id/btnComentar"
             app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
-            app:srcCompat="@drawable/ver"
-            />
+            app:srcCompat="@drawable/ver" />
 
         <ImageButton
             android:id="@+id/btnFavorite"
@@ -167,13 +167,28 @@
             android:id="@+id/txtComentarios"
             android:layout_width="217dp"
             android:layout_height="55dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="64dp"
             android:ems="10"
             android:hint="Comentarios:"
             android:inputType="text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lbldesDF" />
+
+        <ImageButton
+            android:id="@+id/btnEnviarcoment"
+            android:layout_width="41dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.352"
+            app:layout_constraintStart_toEndOf="@+id/txtPuntuacion"
+            app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
+            app:layout_constraintVertical_bias="0.946"
+            app:srcCompat="@drawable/comentarios"
+            tools:ignore="UnknownId" />
 
         <EditText
             android:id="@+id/txtPuntuacion"
@@ -187,21 +202,6 @@
             app:layout_constraintStart_toEndOf="@+id/txtComentarios"
             app:layout_constraintTop_toBottomOf="@+id/lbldesDF" />
 
-        <ImageButton
-            android:id="@+id/btnEnviarcoment"
-            android:layout_width="41dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="16dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.666"
-            app:layout_constraintStart_toEndOf="@+id/txtPuntuacion"
-            app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
-            app:layout_constraintVertical_bias="0.96"
-            app:srcCompat="@drawable/comentarios"
-            tools:ignore="UnknownId" />
-
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
@@ -213,8 +213,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btnFavorite"
             app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintStart_toEndOf="@+id/idVerComentario"
-            app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/lbldesDF" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

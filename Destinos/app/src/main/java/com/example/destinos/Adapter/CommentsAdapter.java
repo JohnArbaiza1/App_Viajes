@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.destinos.Comentarios;
@@ -53,6 +54,7 @@ public class CommentsAdapter extends BaseAdapter {
         TextView txtName = convertView.findViewById(R.id.lblNameUserComment);
         TextView txtComentario = convertView.findViewById(R.id.lblComentarioUser);
         TextView txtPuntuacion = convertView.findViewById(R.id.lblPuntuacion);
+        RatingBar miRatingBar = convertView.findViewById(R.id.ratingBar);
         //----------------------------------------------------------------------------
 
                 //Mostramos los datos
@@ -60,6 +62,12 @@ public class CommentsAdapter extends BaseAdapter {
                 txtName.setText(comen.getNameUsuario());
                 txtComentario.setText(comen.getComment());
                 txtPuntuacion.setText(comen.getPuntuacion());
+                //Para mostrar segun la puntuacion
+                float puntos = Integer.parseInt(comen.getPuntuacion());
+                miRatingBar.setRating(puntos);
+                //Desactivamos que el usuario pueda interactuar con el RatigBar
+                miRatingBar.setIsIndicator(true);
+
 
 
         return convertView;

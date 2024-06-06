@@ -13,4 +13,5 @@
         <item name="itemTextColor">@color/white</item>
         <item name="itemIconSize">28dp</item>
     </style>
+
 </resources>
