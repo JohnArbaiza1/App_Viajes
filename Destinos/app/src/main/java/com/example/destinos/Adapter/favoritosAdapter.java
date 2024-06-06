@@ -30,12 +30,15 @@ public class favoritosAdapter extends BaseAdapter {
     private List<String> listaFav;
     private Context context;
     private String idUser;
+    private TextView mensaje;
     private DatabaseReference destinosref, userref, userfavref;
 
-    public favoritosAdapter(List<String> listaFav, Context context, String idUser) {
+    public favoritosAdapter(List<String> listaFav, Context context, String idUser, TextView mensaje) {
         this.listaFav = listaFav;
         this.context = context;
         this.idUser = idUser;
+        this.mensaje = mensaje;
+       actualizarmensaje();
     }
 
     @Override
@@ -136,7 +139,6 @@ public class favoritosAdapter extends BaseAdapter {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            
                         }
                     });
                 }
@@ -144,10 +146,23 @@ public class favoritosAdapter extends BaseAdapter {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Manejo de errores aquí
             }
         });
 
         return root;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        actualizarmensaje();
+    }
+
+    private void  actualizarmensaje() {
+        if (listaFav.isEmpty()) {
+            mensaje.setVisibility(View.VISIBLE);
+        } else {
+            mensaje.setVisibility(View.GONE);
+        }
     }
 }
