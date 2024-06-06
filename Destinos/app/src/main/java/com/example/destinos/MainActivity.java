@@ -111,15 +111,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Este metodo nos permite verificar si el usuario sigue logueado
     @Override
     protected void onStart() {
         super.onStart();
+        //Verificamos si el usuario ya ha iniciado session
         if(mauth.getCurrentUser() != null){
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 Intent intent= new Intent(MainActivity.this,InicioActivity.class);
                 intent.putExtra("idUser",user.getUid());
                 startActivity(intent);
+                //Para que no regrese a esta activity
                 finish();
             }
         }

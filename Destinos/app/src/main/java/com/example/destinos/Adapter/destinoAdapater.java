@@ -229,6 +229,11 @@ public class destinoAdapater extends BaseAdapter {
                         } else {
                             comentario.comment = cajaComentarios.getText().toString();
                             comentario.puntuacion = cajaPuntuacion.getText().toString();
+                            int puntos = Integer.parseInt(comentario.getPuntuacion());
+                            //Validamos que la puntuacion no pase de 5
+                            if (puntos > 5) {
+                                Toast.makeText(context, "La puntuacion maxima que puedes dar es 5", Toast.LENGTH_SHORT).show();
+                            } else {
                             System.out.println(destinoId);
 
                             // Asignamos el id del usuario logueado al comentario
@@ -274,6 +279,7 @@ public class destinoAdapater extends BaseAdapter {
                                 // Si no hay usuario autenticado, muestra un mensaje de error
                                 Toast.makeText(context, "Error: No se ha encontrado un usuario autenticado", Toast.LENGTH_SHORT).show();
                             }
+                        }
                         }
                         //--------------------------------------------------------------------------------------------------------------
 
