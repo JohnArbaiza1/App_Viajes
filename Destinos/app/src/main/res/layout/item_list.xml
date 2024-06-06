@@ -6,188 +6,199 @@
     android:layout_height="wrap_content"
     >
 
-    <TextView
-        android:id="@+id/lblnameF"
-        android:layout_width="226dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="16dp"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.565"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/lbldireF" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="122dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="serif"
-        android:text="Descripcion:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <ImageButton
-        android:id="@+id/btnComentar"
-        android:layout_width="40dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
-        app:srcCompat="@drawable/message" />
-
-    <ImageButton
-        android:id="@+id/btnFavorite"
-        android:layout_width="36dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toEndOf="@+id/idVerComentario"
-        app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
-        app:srcCompat="@drawable/favoritos" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="83dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="56dp"
-        android:text="Destino:"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewF" />
-
-    <TextView
-        android:id="@+id/lbldesDF"
-        android:layout_width="314dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.618"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-    <EditText
-        android:id="@+id/txtComentarios"
-        android:layout_width="217dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="56dp"
-        android:ems="10"
-        android:hint="Comentarios:"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbldesDF" />
-
-    <TextView
-        android:id="@+id/lblautorP"
-        android:layout_width="110dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewF" />
-
-    <TextView
-        android:id="@+id/lbldireF"
-        android:layout_width="111dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="56dp"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.254"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewF"></TextView>
-
-
-    <ImageButton
-        android:id="@+id/btnEnviarcoment"
-        android:layout_width="41dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="64dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/txtPuntuacion"
-        app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
-        app:srcCompat="@drawable/comentarios"
-        tools:ignore="UnknownId" />
-
-    <EditText
-        android:id="@+id/txtPuntuacion"
-        android:layout_width="104dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
-        android:ems="10"
-        android:hint="Puntuación"
-        android:inputType="number"
-        app:layout_constraintStart_toEndOf="@+id/txtComentarios"
-        app:layout_constraintTop_toBottomOf="@+id/lbldesDF" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="103dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="serif"
-        android:text="Direccion:"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbldireF" />
-
     <ImageView
         android:id="@+id/imageViewF"
-        android:layout_width="381dp"
-        android:layout_height="146dp"
+        android:layout_width="406dp"
+        android:layout_height="234dp"
         android:layout_marginTop="4dp"
-        android:background="@drawable/bordes2"
+        android:background="@drawable/imgbordes"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/prueba" />
 
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="20dp"
-        android:text="Publicado por:"
-        android:textSize="18sp"
-        android:textStyle="bold"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="404dp"
+        android:layout_height="407dp"
+        android:layout_marginTop="264dp"
+        android:background="@drawable/bordes2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewF" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/idVerComentario"
-        android:layout_width="40dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toEndOf="@+id/btnComentar"
-        app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
-        app:srcCompat="@drawable/ver" />
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Publicado por:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lblautorP"
+            android:layout_width="110dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:text="TextView"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.186"
+            app:layout_constraintStart_toEndOf="@+id/textView11"
+            app:layout_constraintTop_toTopOf="parent"></TextView>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="83dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Destino:"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+        <TextView
+            android:id="@+id/lbldireF"
+            android:layout_width="230dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/lblnameF"></TextView>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="103dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="serif"
+            android:text="Direccion:"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/lblnameF"
+            android:layout_width="175dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/lblautorP" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="122dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="84dp"
+            android:fontFamily="serif"
+            android:text="Descripcion:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.457"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblnameF" />
+
+        <TextView
+            android:id="@+id/lbldesDF"
+            android:layout_width="314dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <ImageButton
+            android:id="@+id/btnComentar"
+            android:layout_width="40dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
+            app:srcCompat="@drawable/message" />
+
+        <ImageButton
+            android:id="@+id/idVerComentario"
+            android:layout_width="40dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toEndOf="@+id/btnComentar"
+            app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
+            app:srcCompat="@drawable/ver" />
+
+        <ImageButton
+            android:id="@+id/btnFavorite"
+            android:layout_width="36dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toEndOf="@+id/idVerComentario"
+            app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
+            app:srcCompat="@drawable/favoritos" />
+
+        <EditText
+            android:id="@+id/txtComentarios"
+            android:layout_width="217dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:ems="10"
+            android:hint="Comentarios:"
+            android:inputType="text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbldesDF" />
+
+        <EditText
+            android:id="@+id/txtPuntuacion"
+            android:layout_width="113dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="64dp"
+            android:ems="10"
+            android:hint="Puntuación"
+            android:inputType="number"
+            app:layout_constraintStart_toEndOf="@+id/txtComentarios"
+            app:layout_constraintTop_toBottomOf="@+id/lbldesDF" />
+
+        <ImageButton
+            android:id="@+id/btnEnviarcoment"
+            android:layout_width="41dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toEndOf="@+id/txtPuntuacion"
+            app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
+            app:layout_constraintVertical_bias="0.96"
+            app:srcCompat="@drawable/comentarios"
+            tools:ignore="UnknownId" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

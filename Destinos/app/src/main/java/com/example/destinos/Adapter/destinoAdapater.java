@@ -38,25 +38,29 @@ import java.util.Map;
 
 public class destinoAdapater extends BaseAdapter {
 
+    //-----------------------------------------------------------------------
+    //Atributos de la clase
+    //-----------------------------------------------------------------------
     private Context context;
     private ArrayList<Destinos> dataDestinos;
     private DatabaseReference reference, referenceUser,ref;
     private FirebaseAuth mauth;
     private Comentarios comentario;
     private String destinoId;
-    public  String idDes;
+
     private String nombreDestino;
     Fragment vistas;
-
     private String idUser;
-
+    //-----------------------------------------------------------------------
+    //Cosntructor
+    //-----------------------------------------------------------------------
     public destinoAdapater(Context context, ArrayList<Destinos> dataDestinos, String iduser) {
         this.context = context;
         this.dataDestinos = dataDestinos;
         this.idUser= iduser;
         comentario = new Comentarios();
     }
-
+    //-----------------------------------------------------------------------
     @Override
     public int getCount() {
         return this.dataDestinos.size();
@@ -77,16 +81,32 @@ public class destinoAdapater extends BaseAdapter {
         view = LayoutInflater.from(context).inflate(R.layout.item_list, null);
 
         Destinos ds = dataDestinos.get(position);
-
+        //-----------------------------------------------------------
         TextView txtnombre = view.findViewById(R.id.lblnameF);
         TextView txtdes = view.findViewById(R.id.lbldesDF);
         TextView txtdire = view.findViewById(R.id.lbldireF);
         TextView lblautor= view.findViewById(R.id.lblautorP);
         ImageView img = view.findViewById(R.id.imageViewF);
+        //-----------------------------------------------------------------
+        //Parte donde otorgamos un tamaño definidos a las imagenes a cargar
+        //-----------------------------------------------------------------
+        int widthPixel = context.getResources().getDisplayMetrics().widthPixels;
+        //Para definir el ancho deseado
+        int imgAncho = widthPixel;
+        //Definimos la altura segun la relacion del aspecto que queremos visualizar
+        int HeightPixel= (int) (imgAncho * 0.68);
+
+        //Establecemos las dimensiones
+        ViewGroup.LayoutParams layoutParams = img.getLayoutParams();
+        layoutParams.width = widthPixel;
+        layoutParams.height = HeightPixel;
+        img.setLayoutParams(layoutParams);
+        //------------------------------------------------------------------------
+        //Partde donde se trabaja para poder hacer zoom en las imagenes
+        //------------------------------------------------------------------------
+
         vistas = new DetallesComentariosFragment();
-
         ref= FirebaseDatabase.getInstance().getReference("Usuarios").child(ds.getIdUser());
-
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -102,13 +122,13 @@ public class destinoAdapater extends BaseAdapter {
                 }
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
+        //------------------------------------------------------------------------
+        //Capturando los id
         //----------------------------------------------------
         ImageButton btnComentarios = view.findViewById(R.id.btnComentar);
         ImageButton btnEnviar = view.findViewById(R.id.btnEnviarcoment);
@@ -134,18 +154,15 @@ public class destinoAdapater extends BaseAdapter {
                 // Toast.makeText(context, nombreDestino, Toast.LENGTH_SHORT).show();
             }
         });
-
-
+        //Fin del primer evento
+        //------------------------------------------------------------------------
         referenceUser = FirebaseDatabase.getInstance().getReference("Usuarios").child(idUser);
+        //------------------------------------------------------------------------
         btnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String idDestino = ds.getIdDestino();
-
-
                 DatabaseReference userFavoritesRef = referenceUser.child("Favoritos");
-
-
                 userFavoritesRef.orderByChild("idDestino").equalTo(idDestino).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -178,24 +195,33 @@ public class destinoAdapater extends BaseAdapter {
                 });
             }
         });
-
+        //Fin del segundo evento
+        //------------------------------------------------------------------------
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //----------------------------------------------------------------------------------------
+                //Obtenemos una referencia del node de Destinos
                 reference = FirebaseDatabase.getInstance().getReference().child("Destinos");
+                // indicamos que queremos mantener sincronizados los datos en el nodo de “Destinos”
                 reference.keepSynced(true);
+                //obteniendo una instancia de la autenticación de Firebase.
                 mauth = FirebaseAuth.getInstance();
-
+                //----------------------------------------------------------------------------------------
                 // Definimos una consulta para encontrar el nombre de un lugar
+                // filtrando los resultados para que solo coincidan con el valor de nombreDestino
                 Query query = reference.orderByChild("Nombre").equalTo(nombreDestino);
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //---------------------------------------------------------------
+                        //Iteramos a través de los hijos del snapshot
                         for (DataSnapshot destinoSnapshot : snapshot.getChildren()) {
+                            //asignamos la clave del destino encontrado a la variable destinoId
                             destinoId = destinoSnapshot.getKey();
                         }
-
+                        //---------------------------------------------------------------
                         // Validamos que no hayan campos vacíos
                         if (cajaComentarios.getText().toString().isEmpty() || cajaPuntuacion.getText().toString().isEmpty()) {
                             Toast.makeText(context, "Aun no has comentado nada viajero", Toast.LENGTH_SHORT).show();
@@ -206,8 +232,10 @@ public class destinoAdapater extends BaseAdapter {
 
                             // Asignamos el id del usuario logueado al comentario
                             FirebaseUser currentUser = mauth.getCurrentUser();
+                            //verificamos si el objeto currentUser no es nulo
                             if (currentUser != null) {
-                                String id = currentUser.getUid();
+                                //obteniendo (UID)
+                                String id = currentUser.getUid(); //getUid() devuelve una cadena que representa el UID del usuario.
                                 comentario.idUser = id;
 
                                 // Obtenemos el nombre del usuario actual y lo asignamos al comentario
@@ -246,6 +274,7 @@ public class destinoAdapater extends BaseAdapter {
                                 Toast.makeText(context, "Error: No se ha encontrado un usuario autenticado", Toast.LENGTH_SHORT).show();
                             }
                         }
+                        //--------------------------------------------------------------------------------------------------------------
 
                     }
                     @Override
@@ -256,6 +285,8 @@ public class destinoAdapater extends BaseAdapter {
                 });
             }
         });
+        //Fin del tercer evento
+        //-------------------------------------------------------------------------------------------------------------
 
         btnver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,9 +303,10 @@ public class destinoAdapater extends BaseAdapter {
                         .addToBackStack(null).commit();// agregamos una  pila de retroceso por si necesarioacaso
             }
         });
+        //fin del cuarto evento
+        //-------------------------------------------------------------------------------------------------------------
 
         return view;
     }
-
 
 }
