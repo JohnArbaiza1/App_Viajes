@@ -39,6 +39,7 @@ public class DetallesComentariosFragment extends Fragment {
     private CommentsAdapter adapter;
     private ArrayList<Comentarios> listaComentarios;
     Button btnRegresa;
+    Fragment explorar;
     //-----------------------------------------------
 
     // TODO: Rename and change types of parameters
@@ -87,6 +88,8 @@ public class DetallesComentariosFragment extends Fragment {
         listView = root.findViewById(R.id.listaComentarios);
         btnRegresa = root.findViewById(R.id.btnRegresarExplorar);
         //-------------------------------------------------------
+        explorar = new principalFragment();
+        //--------------------------------------------------------
         listaComentarios = new ArrayList<>();
         adapter  = new CommentsAdapter(getContext(),listaComentarios);
         listView.setAdapter(adapter);
@@ -122,17 +125,15 @@ public class DetallesComentariosFragment extends Fragment {
 
             }
         });
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+
+        btnRegresa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,explorar).commit();
+
+            }
+        });
+
 
         return root;
     }

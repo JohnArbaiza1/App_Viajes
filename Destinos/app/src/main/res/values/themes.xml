@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.Destinos" parent="Base.Theme.Destinos" />
+    
+    <style name="BottomNavigationView">
+        <item name="backgroundTint">@color/menta</item>
+        <item name="itemIconTint">@color/white</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemIconSize">28dp</item>
+    </style>
 </resources>
