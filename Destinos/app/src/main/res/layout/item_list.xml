@@ -148,13 +148,14 @@
             android:background="@android:color/transparent"
             app:layout_constraintStart_toEndOf="@+id/btnComentar"
             app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
-            app:srcCompat="@drawable/ver" />
+            app:srcCompat="@drawable/ver"
+            />
 
         <ImageButton
             android:id="@+id/btnFavorite"
             android:layout_width="36dp"
             android:layout_height="40dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="116dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
             app:layout_constraintStart_toEndOf="@+id/idVerComentario"
@@ -175,8 +176,8 @@
 
         <EditText
             android:id="@+id/txtPuntuacion"
-            android:layout_width="113dp"
-            android:layout_height="52dp"
+            android:layout_width="112dp"
+            android:layout_height="55dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="64dp"
             android:ems="10"
@@ -199,6 +200,20 @@
             app:layout_constraintVertical_bias="0.96"
             app:srcCompat="@drawable/comentarios"
             tools:ignore="UnknownId" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Ver comentarios"
+            android:textColor="@color/verdoOscuro"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/btnFavorite"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toEndOf="@+id/idVerComentario"
+            app:layout_constraintTop_toBottomOf="@+id/lbldesDF"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

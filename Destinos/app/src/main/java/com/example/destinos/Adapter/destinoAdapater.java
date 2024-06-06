@@ -136,6 +136,7 @@ public class destinoAdapater extends BaseAdapter {
         ImageButton btnver = view.findViewById(R.id.idVerComentario);
         EditText cajaComentarios = view.findViewById(R.id.txtComentarios);
         EditText cajaPuntuacion = view.findViewById(R.id.txtPuntuacion);
+        TextView ver = view.findViewById(R.id.textView12);
         //----------------------------------------------------
         // Establecemos el botón de enviar comentario y la caja de comentarios de manera invisible
         btnEnviar.setVisibility(View.INVISIBLE);
@@ -291,22 +292,36 @@ public class destinoAdapater extends BaseAdapter {
         btnver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //Obtenemos la posicion y el id del destino donde se encuentra esta
-                String ds = dataDestinos.get(position).getIdDestino();
-                System.out.println("manda "+ ds);
-                //definimos newIntance para mandar el id al fragment
-                DetallesComentariosFragment detalle = DetallesComentariosFragment.newInstance(ds);
-               // Realizamos la transaccion del fragmento
-                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, detalle)
-                        .addToBackStack(null).commit();// agregamos una  pila de retroceso por si necesarioacaso
+                verComentaruiosUser(position);
+
+            }
+        });
+        ver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verComentaruiosUser(position);
             }
         });
         //fin del cuarto evento
         //-------------------------------------------------------------------------------------------------------------
 
         return view;
+    }
+
+
+    //metodo para ver los comentarios
+    public void verComentaruiosUser(int position){
+        //Obtenemos la posicion y el id del destino donde se encuentra esta
+        String ds = dataDestinos.get(position).getIdDestino();
+        System.out.println("manda "+ ds);
+        //definimos newIntance para mandar el id al fragment
+        DetallesComentariosFragment detalle = DetallesComentariosFragment.newInstance(ds);
+        // Realizamos la transaccion del fragmento
+        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, detalle)
+                .addToBackStack(null).commit();// agregamos una  pila de retroceso por si necesarioacaso
+
     }
 
 }
